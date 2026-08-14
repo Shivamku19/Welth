@@ -2,14 +2,15 @@ import React from "react";
 import { Button } from "./ui/button";
 import { PenBox, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 
 const Header = () => {
   return (
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b">
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/">
-          <div className="text-2xl font-bold text-blue-600 tracking-tight">Welth</div>
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/logo.png" alt="welth logo" width={100} height={40} className="object-contain" />
         </Link>
 
         {/* Navigation Links */}
