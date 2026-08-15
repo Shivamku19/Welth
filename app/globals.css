@@ -128,3 +128,18 @@
     @apply font-sans;
   }
 }
+
+.hero-image-wrapper {
+  perspective: 1000px;
+}
+
+.hero-image {
+  /* Use a negative rotateX so the top tilts backwards away from you */
+  transform: rotateX(-15deg) scale(0.95);
+  transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.hero-image.scrolled {
+  transform: rotateX(0deg) scale(1);
+}
