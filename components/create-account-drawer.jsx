@@ -161,11 +161,9 @@ export function CreateAccountDrawer({ children }) {
             </div>
 
             <div className="flex gap-4 pt-4">
-              <DrawerClose>
-                <Button type="button" variant="outline" className="flex-1">
-                  Cancel
-                </Button>
-              </DrawerClose>
+              <Button type="button" variant="outline" className="flex-1" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
               <Button type="submit" className="flex-1" disabled={isSubmitting}>
                 {isSubmitting ? "Creating..." : "Create Account"}
               </Button>
