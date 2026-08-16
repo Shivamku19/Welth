@@ -4,6 +4,7 @@ import { PenBox, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Show, SignInButton, UserButton } from "@clerk/nextjs";
+import { checkUser } from "../lib/checkUser";
 
 const Header = async () => {
   await checkUser();
