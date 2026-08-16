@@ -68,7 +68,7 @@ export function CreateAccountDrawer({ children }) {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>{children}</DrawerTrigger>
+      <DrawerTrigger>{children}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Create New Account</DrawerTitle>
@@ -161,7 +161,7 @@ export function CreateAccountDrawer({ children }) {
             </div>
 
             <div className="flex gap-4 pt-4">
-              <DrawerClose asChild>
+              <DrawerClose>
                 <Button type="button" variant="outline" className="flex-1">
                   Cancel
                 </Button>
