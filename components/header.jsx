@@ -5,7 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 
-const Header = () => {
+const Header = async () => {
+  await checkUser();
   return (
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b">
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
