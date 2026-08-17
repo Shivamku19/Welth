@@ -8,9 +8,7 @@ export default async function DashboardPage() {
   const accounts = await getUserAccounts();
 
   return (
-    <div className="space-y-8 px-4">
-      <h1 className="text-6xl font-bold tracking-tighter text-blue-600 mb-8">Dashboard</h1>
-      
+    <div className="space-y-8">
       {/* Accounts Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <CreateAccountDrawer>
