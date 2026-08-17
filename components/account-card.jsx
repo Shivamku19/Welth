@@ -56,11 +56,11 @@ export function AccountCard({ account }) {
           <div className="text-2xl font-bold">
             ${parseFloat(balance).toFixed(2)}
           </div>
-          <p className="text-xs text-muted-foreground capitalize">
+          <p className="text-xs text-muted-foreground capitalize mb-4">
             {type.toLowerCase()} Account
           </p>
         </CardContent>
-        <CardFooter className="flex justify-between text-sm text-muted-foreground">
+        <CardFooter className="flex justify-between text-sm text-muted-foreground pt-4">
           <div className="flex items-center">
             <ArrowUpRight className="mr-1 h-4 w-4 text-emerald-500" />
             Income
