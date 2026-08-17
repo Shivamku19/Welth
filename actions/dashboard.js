@@ -59,3 +59,35 @@ export async function createAccount(data) {
     return { success: false, error: error.message };
   }
 }
+
+export async function getUserAccounts() {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const user = await db.user.findUnique({
+    where: { clerkUserId: userId },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const accounts = await db.account.findMany({
+    where: { userId: user.id },
+    orderBy: { createdAt: "desc" },
+    include: {
+      _count: {
+        select: {
+          transactions: true,
+        },
+      },
+    },
+  });
+
+  const serializedAccounts = accounts.map((account) => ({
+    ...account,
+    balance: account.balance.toNumber(),
+  }));
+
+  return serializedAccounts;
+}
