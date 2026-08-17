@@ -12,8 +12,9 @@ export function AccountCard({ account }) {
   const { name, type, balance, id, isDefault } = account;
   const [isPending, startTransition] = useTransition();
 
-  const handleDefaultChange = async (event) => {
-    event.preventDefault(); // Prevent navigation
+  const handleDefaultChange = async () => {
+    // Prevent default and stop propagation are handled in the onClick wrapper
+    // since onCheckedChange only passes a boolean value.
 
     if (isDefault) {
       toast.warning("You need at least 1 default account");
@@ -43,8 +44,11 @@ export function AccountCard({ account }) {
           </CardTitle>
           <Switch
             checked={isDefault}
-            onCheckedChange={() => handleDefaultChange({ preventDefault: () => {} })}
-            onClick={handleDefaultChange}
+            onCheckedChange={handleDefaultChange}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
             disabled={isPending}
           />
         </CardHeader>
