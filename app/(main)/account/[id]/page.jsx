@@ -12,7 +12,12 @@ export default async function AccountPage({ params }) {
     notFound();
   }
 
-  const { transactions, ...account } = accountData;
+  const { transactions: rawTransactions, ...account } = accountData;
+
+  const transactions = rawTransactions.map((t) => ({
+    ...t,
+    amount: parseFloat(t.amount),
+  }));
 
   return (
     <div className="space-y-8 px-5">
