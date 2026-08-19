@@ -281,7 +281,7 @@ export function TransactionTable({ transactions }) {
                       {transaction.isRecurring ? (
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger>
                               <Badge variant="secondary" className="gap-1 bg-purple-100 text-purple-700 hover:bg-purple-200">
                                 <RefreshCw className="h-3 w-3" />
                                 {transaction.recurringInterval.charAt(0) + transaction.recurringInterval.slice(1).toLowerCase()}
