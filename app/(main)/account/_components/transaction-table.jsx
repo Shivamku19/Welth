@@ -266,11 +266,9 @@ export function TransactionTable({ transactions }) {
                     </TableCell>
                     <TableCell>
                       <Badge 
-                        variant="outline" 
+                        className="text-white hover:opacity-80" 
                         style={{
-                          backgroundColor: categoryColors[transaction.category] + "20",
-                          color: categoryColors[transaction.category],
-                          borderColor: categoryColors[transaction.category] + "40"
+                          backgroundColor: categoryColors[transaction.category],
                         }}
                       >
                         {defaultCategories.find((c) => c.id === transaction.category)?.name || transaction.category}
@@ -295,7 +293,7 @@ export function TransactionTable({ transactions }) {
                           </Tooltip>
                         </TooltipProvider>
                       ) : (
-                        <Badge variant="outline" className="gap-1 text-muted-foreground">
+                        <Badge variant="outline" className="gap-1">
                           <Clock className="h-3 w-3" />
                           One-time
                         </Badge>
