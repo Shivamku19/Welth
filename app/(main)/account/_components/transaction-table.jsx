@@ -1,3 +1,5 @@
+// transaction-table.jsx
+// Displays a detailed list of transactions with filtering, sorting, and bulk actions.
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
