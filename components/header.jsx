@@ -12,7 +12,7 @@ const Header = async () => {
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b">
       <nav className="w-full px-8 py-1 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo.png" alt="welth logo" width={100} height={40} className="object-contain" />
+          <Image src="/logo.png" alt="welth logo" width={100} height={40} className="h-auto object-contain" />
         </Link>
 
         {/* Navigation Links */}
