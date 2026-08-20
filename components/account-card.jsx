@@ -63,11 +63,11 @@ export function AccountCard({ account }) {
         <CardFooter className="flex justify-between text-sm text-muted-foreground pt-4">
           <div className="flex items-center">
             <ArrowUpRight className="mr-1 h-4 w-4 text-emerald-500" />
-            Income
+            Income: ${parseFloat(account.income || 0).toFixed(2)}
           </div>
           <div className="flex items-center">
             <ArrowDownRight className="mr-1 h-4 w-4 text-rose-500" />
-            Expense
+            Expense: ${parseFloat(account.expense || 0).toFixed(2)}
           </div>
         </CardFooter>
       </Link>

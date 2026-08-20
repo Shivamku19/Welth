@@ -84,10 +84,28 @@ export async function getUserAccounts() {
     },
   });
 
-  const serializedAccounts = accounts.map((account) => ({
-    ...account,
-    balance: account.balance.toNumber(),
-  }));
+  const serializedAccounts = await Promise.all(
+    accounts.map(async (account) => {
+      const accountTransactions = await db.transaction.findMany({
+        where: { accountId: account.id },
+      });
+
+      const income = accountTransactions
+        .filter((t) => t.type === "INCOME")
+        .reduce((sum, t) => sum + t.amount.toNumber(), 0);
+
+      const expense = accountTransactions
+        .filter((t) => t.type === "EXPENSE")
+        .reduce((sum, t) => sum + t.amount.toNumber(), 0);
+
+      return {
+        ...account,
+        balance: account.balance.toNumber(),
+        income,
+        expense,
+      };
+    })
+  );
 
   return serializedAccounts;
 }
