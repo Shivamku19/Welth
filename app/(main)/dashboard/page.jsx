@@ -7,6 +7,14 @@ import { Plus } from "lucide-react";
 export default async function DashboardPage() {
   const accounts = await getUserAccounts();
 
+  const defaultAccount = accounts?.find((account) => account.isDefault);
+
+let budgetData = null;
+
+if (defaultAccount) {
+  budgetData = await getCurrentBudget(defaultAccount.id);
+}
+
   return (
     <div className="space-y-8">
       {/* Accounts Grid */}
