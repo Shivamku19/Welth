@@ -70,7 +70,7 @@ export default function EmailTemplate({
           <Section style={content}>
             <Text style={greeting}>Hello {userName},</Text>
             <Text style={text}>
-              You've used <strong>{data?.percentage.toFixed(1)}%</strong> of your monthly budget.
+              You&apos;ve used <strong>{data?.percentage.toFixed(1)}%</strong> of your monthly budget.
             </Text>
             <Section style={statsBox}>
               <Text style={statText}>
