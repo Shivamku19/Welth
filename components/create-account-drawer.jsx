@@ -71,7 +71,7 @@ export function CreateAccountDrawer({ children }) {
       {children && (typeof children === "string" ? (
         <DrawerTrigger>{children}</DrawerTrigger>
       ) : (
-        <DrawerTrigger render={children} />
+        <DrawerTrigger render={children} nativeButton={false} />
       ))}
       <DrawerContent className="max-w-md mx-auto">
         <DrawerHeader>

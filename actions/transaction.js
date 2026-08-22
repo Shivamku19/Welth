@@ -45,6 +45,8 @@ export async function createTransaction(data) {
       requested: 1,
     });
 
+    console.log("Arcjet decision:", decision.conclusion, "isDenied:", decision.isDenied(), "reason:", decision.reason);
+
     if (decision.isDenied()) {
       if (decision.reason.isRateLimit()) {
         const { remaining, reset } = decision.reason;
