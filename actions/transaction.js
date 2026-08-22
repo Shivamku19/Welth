@@ -1,5 +1,7 @@
 "use server";
 
+import aj from "@/lib/arcjet";
+import { request } from "@arcjet/next";
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
@@ -35,6 +37,32 @@ export async function createTransaction(data) {
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
 
+    //Get request data for ArcJet
+    const req = await request();
+    // Check rate limit
+    const decision = await aj.protect(req, {
+      userId,
+      requested: 1,
+    });
+
+    if (decision.isDenied()) {
+      if (decision.reason.isRateLimit()) {
+        const { remaining, reset } = decision.reason;
+
+        console.error({
+          code: "RATE_LIMIT_EXCEEDED",
+          details: {
+            remaining,
+            resetInSeconds: reset,
+          },
+        });
+
+        throw new Error("Too many requests. Please try again later.");
+      }
+
+      throw new Error("Request Blocked");
+    }
+
     const user = await db.user.findUnique({
       where: { clerkUserId: userId },
     });
@@ -54,8 +82,7 @@ export async function createTransaction(data) {
       throw new Error("Account not found");
     }
 
-    const balanceChange =
-      data.type === "EXPENSE" ? -data.amount : data.amount;
+    const balanceChange = data.type === "EXPENSE" ? -data.amount : data.amount;
     const newBalance = account.balance.toNumber() + balanceChange;
 
     const transaction = await db.$transaction(async (tx) => {
@@ -86,4 +113,3 @@ export async function createTransaction(data) {
     throw new Error(error.message);
   }
 }
-
