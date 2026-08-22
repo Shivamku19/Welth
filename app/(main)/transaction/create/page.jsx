@@ -7,7 +7,7 @@ const AddTransactionPage = async () => {
   const accounts = await getUserAccounts();
 
   return (
-    <div className="max-w-3xl mx-auto px-5">
+    <div className="max-w-3xl mx-auto px-5 pb-20">
       <h1 className="text-5xl gradient-title mb-8">Add Transaction</h1>
 
       <AddTransactionForm

@@ -73,11 +73,11 @@ export function CreateAccountDrawer({ children }) {
       ) : (
         <DrawerTrigger render={children} />
       ))}
-      <DrawerContent>
+      <DrawerContent className="max-w-md mx-auto">
         <DrawerHeader>
           <DrawerTitle>Create New Account</DrawerTitle>
         </DrawerHeader>
-        <div className="px-4 pb-4">
+        <div className="px-4 pb-6 max-h-[75vh] overflow-y-auto">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
