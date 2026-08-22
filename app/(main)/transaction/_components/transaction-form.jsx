@@ -178,17 +178,19 @@ export function AddTransactionForm({ accounts, categories }) {
       <div className="space-y-2">
         <label className="text-sm font-medium">Date</label>
         <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={`w-full pl-3 text-left font-normal ${
-                !date ? "text-muted-foreground" : ""
-              }`}
-            >
-              {date ? format(date, "PPP") : <span>Pick a date</span>}
-              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-            </Button>
-          </PopoverTrigger>
+          <PopoverTrigger
+            render={
+              <Button
+                variant="outline"
+                className={`w-full pl-3 text-left font-normal ${
+                  !date ? "text-muted-foreground" : ""
+                }`}
+              >
+                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
+            }
+          />
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"

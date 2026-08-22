@@ -68,7 +68,11 @@ export function CreateAccountDrawer({ children }) {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger>{children}</DrawerTrigger>
+      {children && (typeof children === "string" ? (
+        <DrawerTrigger>{children}</DrawerTrigger>
+      ) : (
+        <DrawerTrigger render={children} />
+      ))}
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Create New Account</DrawerTitle>
