@@ -28,6 +28,7 @@ import { CreateAccountDrawer } from "@/components/create-account-drawer";
 import { createTransaction } from "@/actions/transaction";
 import { transactionSchema } from "@/app/lib/schema";
 import useFetch from "@/hooks/use-fetch";
+import { cn } from "@/lib/utils";
 
 export function AddTransactionForm({ accounts, categories }) {
   const router = useRouter();
@@ -62,6 +63,9 @@ export function AddTransactionForm({ accounts, categories }) {
   const type = watch("type");
   const isRecurring = watch("isRecurring");
   const date = watch("date");
+  const accountId = watch("accountId");
+  const category = watch("category");
+  const recurringInterval = watch("recurringInterval");
 
   const onSubmit = (data) => {
     const formData = {
@@ -80,8 +84,11 @@ export function AddTransactionForm({ accounts, categories }) {
   }, [transactionResult, transactionLoading, reset, router]);
 
   const filteredCategories = categories.filter(
-    (category) => category.type === type
+    (cat) => cat.type === type
   );
+
+  const selectedAccount = accounts.find((a) => a.id === accountId);
+  const selectedCategory = filteredCategories.find((c) => c.id === category);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -89,11 +96,16 @@ export function AddTransactionForm({ accounts, categories }) {
       <div className="space-y-2">
         <label className="text-sm font-medium">Type</label>
         <Select
-          onValueChange={(value) => setValue("type", value)}
+          onValueChange={(value) => {
+            setValue("type", value);
+            setValue("category", "");
+          }}
           defaultValue={type}
         >
-          <SelectTrigger>
-            <SelectValue placeholder="Select type" />
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select type">
+              {type === "EXPENSE" ? "Expense" : type === "INCOME" ? "Income" : "Select type"}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="EXPENSE">Expense</SelectItem>
@@ -107,7 +119,7 @@ export function AddTransactionForm({ accounts, categories }) {
 
       {/* Amount and Account */}
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="space-y-2">
+        <div className="space-y-2 min-w-0">
           <label className="text-sm font-medium">Amount</label>
           <Input
             type="number"
@@ -120,14 +132,18 @@ export function AddTransactionForm({ accounts, categories }) {
           )}
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-2 min-w-0">
           <label className="text-sm font-medium">Account</label>
           <Select
             onValueChange={(value) => setValue("accountId", value)}
-            defaultValue={getValues("accountId")}
+            defaultValue={accountId}
           >
-            <SelectTrigger>
-              <SelectValue placeholder="Select account" />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select account">
+                {selectedAccount
+                  ? `${selectedAccount.name} ($${parseFloat(selectedAccount.balance).toFixed(2)})`
+                  : "Select account"}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {accounts.map((account) => (
@@ -156,15 +172,17 @@ export function AddTransactionForm({ accounts, categories }) {
         <label className="text-sm font-medium">Category</label>
         <Select
           onValueChange={(value) => setValue("category", value)}
-          defaultValue={getValues("category")}
+          value={category}
         >
-          <SelectTrigger>
-            <SelectValue placeholder="Select category" />
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select category">
+              {selectedCategory ? selectedCategory.name : "Select category"}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            {filteredCategories.map((category) => (
-              <SelectItem key={category.id} value={category.id}>
-                {category.name}
+            {filteredCategories.map((cat) => (
+              <SelectItem key={cat.id} value={cat.id}>
+                {cat.name}
               </SelectItem>
             ))}
           </SelectContent>
@@ -182,12 +200,13 @@ export function AddTransactionForm({ accounts, categories }) {
             render={
               <Button
                 variant="outline"
-                className={`w-full pl-3 text-left font-normal ${
-                  !date ? "text-muted-foreground" : ""
-                }`}
+                className={cn(
+                  "w-full justify-between text-left font-normal",
+                  !date && "text-muted-foreground"
+                )}
               >
                 {date ? format(date, "PPP") : <span>Pick a date</span>}
-                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                <CalendarIcon className="h-4 w-4 opacity-50" />
               </Button>
             }
           />
@@ -239,8 +258,13 @@ export function AddTransactionForm({ accounts, categories }) {
             onValueChange={(value) => setValue("recurringInterval", value)}
             defaultValue={getValues("recurringInterval")}
           >
-            <SelectTrigger>
-              <SelectValue placeholder="Select interval" />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select interval">
+                {recurringInterval
+                  ? recurringInterval.charAt(0) +
+                    recurringInterval.slice(1).toLowerCase()
+                  : "Select interval"}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="DAILY">Daily</SelectItem>
@@ -258,7 +282,7 @@ export function AddTransactionForm({ accounts, categories }) {
       )}
 
       {/* Actions */}
-      <div className="flex gap-4">
+      <div className="flex gap-4 pt-2">
         <Button
           type="button"
           variant="outline"
