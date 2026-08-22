@@ -44,7 +44,7 @@ function Drawer({
 function DrawerTrigger({
   ...props
 }) {
-  return <DrawerPrimitive.Trigger data-slot="drawer-trigger" {...props} />;
+  return <DrawerPrimitive.Trigger {...props} />;
 }
 
 function DrawerPortal({
