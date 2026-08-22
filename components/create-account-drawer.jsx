@@ -105,10 +105,16 @@ export function CreateAccountDrawer({ children }) {
                 render={({ field }) => (
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value || "CURRENT"}
                   >
-                    <SelectTrigger id="type">
-                      <SelectValue placeholder="Select type" />
+                    <SelectTrigger id="type" className="w-full">
+                      <SelectValue placeholder="Select type">
+                        {field.value === "CURRENT"
+                          ? "Current"
+                          : field.value === "SAVINGS"
+                          ? "Savings"
+                          : "Select type"}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="CURRENT">Current</SelectItem>

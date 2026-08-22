@@ -47,10 +47,11 @@ export function AddTransactionForm({ accounts, categories }) {
       type: "EXPENSE",
       amount: "",
       description: "",
-      accountId: accounts.find((ac) => ac.isDefault)?.id || accounts?.[0]?.id,
+      accountId: accounts.find((ac) => ac.isDefault)?.id || accounts?.[0]?.id || "",
       date: new Date(),
       category: "",
       isRecurring: false,
+      recurringInterval: "MONTHLY",
     },
   });
 
@@ -96,11 +97,11 @@ export function AddTransactionForm({ accounts, categories }) {
       <div className="space-y-2">
         <label className="text-sm font-medium">Type</label>
         <Select
+          value={type}
           onValueChange={(value) => {
             setValue("type", value);
             setValue("category", "");
           }}
-          defaultValue={type}
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select type">
@@ -135,8 +136,8 @@ export function AddTransactionForm({ accounts, categories }) {
         <div className="space-y-2 min-w-0">
           <label className="text-sm font-medium">Account</label>
           <Select
+            value={accountId || ""}
             onValueChange={(value) => setValue("accountId", value)}
-            defaultValue={accountId}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select account">
@@ -171,8 +172,8 @@ export function AddTransactionForm({ accounts, categories }) {
       <div className="space-y-2">
         <label className="text-sm font-medium">Category</label>
         <Select
+          value={category || ""}
           onValueChange={(value) => setValue("category", value)}
-          value={category}
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select category">
@@ -255,15 +256,15 @@ export function AddTransactionForm({ accounts, categories }) {
         <div className="space-y-2">
           <label className="text-sm font-medium">Recurring Interval</label>
           <Select
+            value={recurringInterval || "MONTHLY"}
             onValueChange={(value) => setValue("recurringInterval", value)}
-            defaultValue={getValues("recurringInterval")}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select interval">
                 {recurringInterval
                   ? recurringInterval.charAt(0) +
                     recurringInterval.slice(1).toLowerCase()
-                  : "Select interval"}
+                  : "Monthly"}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
