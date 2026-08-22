@@ -6,16 +6,6 @@ import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
-// Polyfill for TextEncoder.encodeInto which is missing in Next.js Server Actions
-// and causes Arcjet's protobuf serialization to fail.
-if (typeof TextEncoder !== "undefined" && typeof TextEncoder.prototype.encodeInto !== "function") {
-  TextEncoder.prototype.encodeInto = function (src, dest) {
-    const buf = Buffer.from(src, "utf-8");
-    const written = buf.copy(dest);
-    return { read: src.length, written };
-  };
-}
-
 const serializeAmount = (obj) => ({
   ...obj,
   amount: obj.amount.toNumber(),
