@@ -46,5 +46,8 @@
     "eslint-config-next": "16.3.0",
     "prisma": "^7.9.1",
     "tailwindcss": "^4"
+  },
+  "overrides": {
+    "@bufbuild/protobuf": "^2.14.0"
   }
 }
