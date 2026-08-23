@@ -28,25 +28,31 @@ export default function EmailTemplate({
         <Preview>Your Monthly Financial Report</Preview>
         <Body style={main}>
           <Container style={container}>
-            <Heading style={heading}>Monthly Report</Heading>
+            <Heading style={headingReport}>Monthly Financial Report</Heading>
             <Section style={content}>
               <Text style={greeting}>Hello {userName},</Text>
               <Text style={text}>
-                Here is your financial summary for the month.
+                Here&apos;s your financial summary for {data?.month}:
               </Text>
-              <Section style={statsBox}>
-                <Text style={statText}>
-                  <strong>Total Income:</strong> ${data?.income}
-                </Text>
-                <Text style={statText}>
-                  <strong>Total Expenses:</strong> ${data?.expenses}
-                </Text>
+
+              <Section style={statContainer}>
+                <Text style={statLabel}>Total Income</Text>
+                <Text style={statValue}>${data?.income}</Text>
               </Section>
+              
+              <Section style={statContainer}>
+                <Text style={statLabel}>Total Expenses</Text>
+                <Text style={statValue}>${data?.expenses}</Text>
+              </Section>
+              
+              <Section style={statContainer}>
+                <Text style={statLabel}>Net</Text>
+                <Text style={statValue}>${data?.income - data?.expenses}</Text>
+              </Section>
+
               {data?.insights && data.insights.length > 0 && (
-                <Section style={statsBox}>
-                  <Text style={statText}>
-                    <strong>Monthly Insights</strong>
-                  </Text>
+                <Section style={statContainer}>
+                  <Text style={statLabel}>Insights</Text>
                   {data.insights.map((insight, index) => (
                     <Text key={index} style={text}>
                       • {insight}
@@ -54,12 +60,6 @@ export default function EmailTemplate({
                   ))}
                 </Section>
               )}
-              <Text style={text}>
-                Keep up the great work managing your finances!
-              </Text>
-              <Button style={button} href={`${process.env.NEXT_PUBLIC_APP_URL || "https://welth.app"}/dashboard`}>
-                View Full Report
-              </Button>
             </Section>
             <Hr style={hr} />
             <Text style={footer}>
@@ -185,4 +185,32 @@ const footer = {
   color: "#8898aa",
   fontSize: "12px",
   textAlign: "center",
+};
+
+const headingReport = {
+  fontSize: "28px",
+  fontWeight: "bold",
+  textAlign: "center",
+  color: "#1e293b",
+  margin: "30px 0",
+};
+
+const statContainer = {
+  padding: "16px",
+  backgroundColor: "#f9fafb",
+  borderRadius: "8px",
+  marginBottom: "16px",
+};
+
+const statLabel = {
+  fontSize: "14px",
+  color: "#6b7280",
+  margin: "0 0 4px 0",
+};
+
+const statValue = {
+  fontSize: "24px",
+  fontWeight: "bold",
+  color: "#111827",
+  margin: "0",
 };
