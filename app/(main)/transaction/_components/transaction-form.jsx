@@ -100,6 +100,21 @@ export function AddTransactionForm({ accounts, categories, editMode = false, ini
     }
   }, [transactionResult, transactionLoading, reset, router, editMode]);
 
+  useEffect(() => {
+    if (initialData && editMode) {
+      reset({
+        type: initialData.type,
+        amount: initialData.amount.toString(),
+        description: initialData.description,
+        accountId: initialData.accountId,
+        date: new Date(initialData.date),
+        category: initialData.category,
+        isRecurring: initialData.isRecurring || false,
+        recurringInterval: initialData.recurringInterval || "MONTHLY",
+      });
+    }
+  }, [initialData, editMode, reset]);
+
   const filteredCategories = categories.filter(
     (cat) => cat.type === type
   );
