@@ -42,6 +42,18 @@ export default function EmailTemplate({
                   <strong>Total Expenses:</strong> ${data?.expenses}
                 </Text>
               </Section>
+              {data?.insights && data.insights.length > 0 && (
+                <Section style={statsBox}>
+                  <Text style={statText}>
+                    <strong>Monthly Insights</strong>
+                  </Text>
+                  {data.insights.map((insight, index) => (
+                    <Text key={index} style={text}>
+                      • {insight}
+                    </Text>
+                  ))}
+                </Section>
+              )}
               <Text style={text}>
                 Keep up the great work managing your finances!
               </Text>
