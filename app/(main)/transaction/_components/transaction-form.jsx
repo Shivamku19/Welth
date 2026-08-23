@@ -25,6 +25,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CreateAccountDrawer } from "@/components/create-account-drawer";
+import { ReceiptScanner } from "./recipt-scanner";
 import { createTransaction } from "@/actions/transaction";
 import { transactionSchema } from "@/app/lib/schema";
 import useFetch from "@/hooks/use-fetch";
@@ -91,8 +92,25 @@ export function AddTransactionForm({ accounts, categories }) {
   const selectedAccount = accounts.find((a) => a.id === accountId);
   const selectedCategory = filteredCategories.find((c) => c.id === category);
 
+  const handleScanComplete = (scannedData) => {
+    if (scannedData) {
+      setValue("amount", scannedData.amount.toString());
+      setValue("date", new Date(scannedData.date));
+      if (scannedData.description) {
+        setValue("description", scannedData.description);
+      }
+      if (scannedData.category) {
+        setValue("category", scannedData.category);
+      }
+      toast.success("Receipt scanned successfully");
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {/* Receipt Scanner */}
+      <ReceiptScanner onScanComplete={handleScanComplete} />
+
       {/* Type */}
       <div className="space-y-2">
         <label className="text-sm font-medium">Type</label>

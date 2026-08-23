@@ -5,6 +5,9 @@ import { request } from "@arcjet/next";
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAi=new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const serializeAmount = (obj) => ({
   ...obj,
@@ -116,6 +119,55 @@ export async function createTransaction(data) {
   }
 }
 
-export async function scanReceipt(file){
+export async function scanReceipt(file) {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+    const model = genAi.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+    const arrayBuffer = await file.arrayBuffer();
+    const base64String = Buffer.from(arrayBuffer).toString("base64");
+
+    const prompt = `
+      Analyze this receipt image and extract the following information in JSON format:
+      - amount: The total amount (number)
+      - date: The date of the receipt (in ISO format)
+      - description: A brief description of the receipt
+      - category: The most appropriate category ID from this list: ["housing", "transportation", "groceries", "utilities", "entertainment", "food", "shopping", "healthcare", "education", "personal", "travel", "insurance", "gifts", "bills", "other-expense"]
+      - merchantName: The name of the store or merchant
+
+      Return strictly a JSON object with these fields, without any markdown formatting or additional text.
+    `;
+
+    const result = await model.generateContent([
+      {
+        inlineData: {
+          data: base64String,
+          mimeType: file.type,
+        },
+      },
+      prompt,
+    ]);
+
+    const response = await result.response;
+    const text = response.text();
+    const cleanText = text.replace(/```(?:json)?\n?/g, "").replace(/```\n?/g, "").trim();
+
+    try {
+      const data = JSON.parse(cleanText);
+      return {
+        amount: parseFloat(data.amount),
+        date: new Date(data.date),
+        description: data.description,
+        category: data.category,
+        merchantName: data.merchantName,
+      };
+    } catch (parseError) {
+      console.error("Error parsing JSON response:", parseError);
+      throw new Error("Invalid response format from AI");
+    }
+  } catch (error) {
+    console.error("Error scanning receipt:", error);
+    throw new Error("Failed to scan receipt");
+  }
 }
