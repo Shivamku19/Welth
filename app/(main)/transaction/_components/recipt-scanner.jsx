@@ -20,8 +20,9 @@ export function ReceiptScanner({ onScanComplete }) {
 
     setIsScanning(true);
     try {
-      // Pass the file directly to the Server Action
-      const data = await scanReceipt(file);
+      const formData = new FormData();
+      formData.append("file", file);
+      const data = await scanReceipt(formData);
       
       if (data) {
         onScanComplete(data);

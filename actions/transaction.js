@@ -119,8 +119,11 @@ export async function createTransaction(data) {
   }
 }
 
-export async function scanReceipt(file) {
+export async function scanReceipt(formData) {
   try {
+    const file = formData.get("file");
+    if (!file) throw new Error("No file provided");
+    
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
     const model = genAi.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -168,6 +171,6 @@ export async function scanReceipt(file) {
     }
   } catch (error) {
     console.error("Error scanning receipt:", error);
-    throw new Error("Failed to scan receipt");
+    throw new Error(error.message || "Failed to scan receipt");
   }
 }
