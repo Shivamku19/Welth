@@ -8,7 +8,7 @@ const AddTransactionPage = async ({ searchParams }) => {
   const accounts = await getUserAccounts();
 
   const sp = await searchParams;
-  const editId = sp?.editId;
+  const editId = sp?.editId || sp?.edit;
 
   let initialData = null;
   if (editId) {
