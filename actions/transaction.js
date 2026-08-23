@@ -125,7 +125,7 @@ export async function scanReceipt(base64String, mimeType) {
     
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
-    const model = genAi.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAi.getGenerativeModel({ model: "gemini-3.6-flash" });
 
     // No need to convert arrayBuffer anymore, we already have the base64 string
     const prompt = `
