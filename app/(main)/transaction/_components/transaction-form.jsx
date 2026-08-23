@@ -26,12 +26,12 @@ import {
 } from "@/components/ui/popover";
 import { CreateAccountDrawer } from "@/components/create-account-drawer";
 import { ReceiptScanner } from "./recipt-scanner";
-import { createTransaction } from "@/actions/transaction";
+import { createTransaction, updateTransaction } from "@/actions/transaction";
 import { transactionSchema } from "@/app/lib/schema";
 import useFetch from "@/hooks/use-fetch";
 import { cn } from "@/lib/utils";
 
-export function AddTransactionForm({ accounts, categories }) {
+export function AddTransactionForm({ accounts, categories, editMode = false, initialData = null }) {
   const router = useRouter();
 
   const {
@@ -44,23 +44,34 @@ export function AddTransactionForm({ accounts, categories }) {
     reset,
   } = useForm({
     resolver: zodResolver(transactionSchema),
-    defaultValues: {
-      type: "EXPENSE",
-      amount: "",
-      description: "",
-      accountId: accounts.find((ac) => ac.isDefault)?.id || accounts?.[0]?.id || "",
-      date: new Date(),
-      category: "",
-      isRecurring: false,
-      recurringInterval: "MONTHLY",
-    },
+    defaultValues: editMode && initialData
+      ? {
+          type: initialData.type,
+          amount: initialData.amount.toString(),
+          description: initialData.description,
+          accountId: initialData.accountId,
+          date: new Date(initialData.date),
+          category: initialData.category,
+          isRecurring: initialData.isRecurring || false,
+          recurringInterval: initialData.recurringInterval || "MONTHLY",
+        }
+      : {
+          type: "EXPENSE",
+          amount: "",
+          description: "",
+          accountId: accounts.find((ac) => ac.isDefault)?.id || accounts?.[0]?.id || "",
+          date: new Date(),
+          category: "",
+          isRecurring: false,
+          recurringInterval: "MONTHLY",
+        },
   });
 
   const {
     loading: transactionLoading,
     fn: transactionFn,
     data: transactionResult,
-  } = useFetch(createTransaction);
+  } = useFetch(editMode ? updateTransaction : createTransaction);
 
   const type = watch("type");
   const isRecurring = watch("isRecurring");
@@ -74,16 +85,20 @@ export function AddTransactionForm({ accounts, categories }) {
       ...data,
       amount: parseFloat(data.amount),
     };
-    transactionFn(formData);
+    if (editMode) {
+      transactionFn(initialData.id, formData);
+    } else {
+      transactionFn(formData);
+    }
   };
 
   useEffect(() => {
     if (transactionResult?.success && !transactionLoading) {
-      toast.success("Transaction created successfully");
+      toast.success(editMode ? "Transaction updated successfully" : "Transaction created successfully");
       reset();
       router.push(`/account/${transactionResult.data.accountId}`);
     }
-  }, [transactionResult, transactionLoading, reset, router]);
+  }, [transactionResult, transactionLoading, reset, router, editMode]);
 
   const filteredCategories = categories.filter(
     (cat) => cat.type === type
@@ -317,8 +332,10 @@ export function AddTransactionForm({ accounts, categories }) {
           {transactionLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Creating Transaction...
+              {editMode ? "Updating..." : "Creating..."}
             </>
+          ) : editMode ? (
+            "Update Transaction"
           ) : (
             "Create Transaction"
           )}
