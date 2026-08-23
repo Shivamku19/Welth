@@ -115,3 +115,7 @@ export async function createTransaction(data) {
     throw new Error(error.message);
   }
 }
+
+export async function scanReceipt(file){
+
+}
