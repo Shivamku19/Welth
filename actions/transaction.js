@@ -119,18 +119,15 @@ export async function createTransaction(data) {
   }
 }
 
-export async function scanReceipt(formData) {
+export async function scanReceipt(base64String, mimeType) {
   try {
-    const file = formData.get("file");
-    if (!file) throw new Error("No file provided");
+    if (!base64String) throw new Error("No image provided");
     
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
     const model = genAi.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const arrayBuffer = await file.arrayBuffer();
-    const base64String = Buffer.from(arrayBuffer).toString("base64");
-
+    // No need to convert arrayBuffer anymore, we already have the base64 string
     const prompt = `
       Analyze this receipt image and extract the following information in JSON format:
       - amount: The total amount (number)
@@ -146,7 +143,7 @@ export async function scanReceipt(formData) {
       {
         inlineData: {
           data: base64String,
-          mimeType: file.type,
+          mimeType: mimeType,
         },
       },
       prompt,

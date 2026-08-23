@@ -20,24 +20,32 @@ export function ReceiptScanner({ onScanComplete }) {
 
     setIsScanning(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const data = await scanReceipt(formData);
-      
-      if (data) {
-        onScanComplete(data);
-        toast.success("Receipt scanned successfully");
-      } else {
-        toast.error("Failed to scan receipt");
-      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async () => {
+        const base64String = reader.result.split(",")[1];
+        try {
+          const data = await scanReceipt(base64String, file.type);
+          if (data) {
+            onScanComplete(data);
+            toast.success("Receipt scanned successfully");
+          } else {
+            toast.error("Failed to scan receipt");
+          }
+        } catch (error) {
+          console.error(error);
+          toast.error(error.message || "Failed to scan receipt");
+        } finally {
+          setIsScanning(false);
+          if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+          }
+        }
+      };
     } catch (error) {
       console.error(error);
       toast.error(error.message || "Failed to scan receipt");
-    } finally {
       setIsScanning(false);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     }
   };
 
