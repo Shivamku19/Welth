@@ -123,7 +123,7 @@ export function AddTransactionForm({ accounts, categories, editMode = false, ini
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Receipt Scanner */}
-      <ReceiptScanner onScanComplete={handleScanComplete} />
+      {!editMode && <ReceiptScanner onScanComplete={handleScanComplete} />}
 
       {/* Type */}
       <div className="space-y-2">
