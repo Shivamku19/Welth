@@ -15,9 +15,23 @@ import {
 import * as React from "react";
 
 export default function EmailTemplate({
-  userName = "",
+  userName = "John Doe",
   type = "monthly-report",
-  data = {},
+  data = {
+    income: 3000,
+    expenses: 2500,
+    month: "August",
+    statData: [
+      { category: "Housing", amount: 1500 },
+      { category: "Groceries", amount: 600 },
+      { category: "Transportation", amount: 400 },
+    ],
+    insights: [
+      "Your housing expenses look good.",
+      "You spent 20% less on groceries this month.",
+      "Consider setting up an emergency fund.",
+    ],
+  },
 }) {
   if (type === "monthly-report") {
     return (
