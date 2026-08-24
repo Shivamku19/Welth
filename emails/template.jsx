@@ -14,26 +14,24 @@ import * as React from "react";
 
 export default function EmailTemplate({
   userName = "",
-  type = "budget-alert",
-  data = {
-    percentage: 80,
-    budgetAmount: "0",
-    totalExpenses: "0",
-  },
+  type = "monthly-report",
+  data = {},
 }) {
   if (type === "monthly-report") {
     return (
       <Html>
         <Head />
         <Preview>Your Monthly Financial Report</Preview>
-        <Body style={main}>
-          <Container style={container}>
-            <Heading style={headingReport}>Monthly Financial Report</Heading>
+        <Body style={styles.body}>
+          <Container style={styles.container}>
+            <Heading style={styles.title}>Monthly Financial Report</Heading>
+
+            <Text style={styles.text}>Hello {userName},</Text>
+            <Text style={styles.text}>
+              Here&rsquo;s your financial summary for {data?.month}:
+            </Text>
+
             <Section style={content}>
-              <Text style={greeting}>Hello {userName},</Text>
-              <Text style={text}>
-                Here&apos;s your financial summary for {data?.month}:
-              </Text>
 
               <Section style={statContainer}>
                 <Text style={statLabel}>Total Income</Text>
@@ -213,4 +211,11 @@ const statValue = {
   fontWeight: "bold",
   color: "#111827",
   margin: "0",
+};
+
+const styles = {
+  body: main,
+  container: container,
+  title: headingReport,
+  text: text,
 };
