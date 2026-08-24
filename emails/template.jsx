@@ -7,6 +7,8 @@ import {
   Preview,
   Section,
   Text,
+  Row,
+  Column,
 } from "@react-email/components";
 
 // Dummy data for preview
@@ -68,16 +70,16 @@ export default function EmailTemplate({
             <Section style={styles.statsContainer}>
               <div style={styles.stat}>
                 <Text style={styles.text}>Total Income</Text>
-                <Text style={styles.heading}>${data?.stats?.totalIncome || 0}</Text>
+                <Text style={styles.heading}>${Number(data?.stats?.totalIncome || 0).toFixed(2)}</Text>
               </div>
               <div style={styles.stat}>
                 <Text style={styles.text}>Total Expenses</Text>
-                <Text style={styles.heading}>${data?.stats?.totalExpenses || 0}</Text>
+                <Text style={styles.heading}>${Number(data?.stats?.totalExpenses || 0).toFixed(2)}</Text>
               </div>
               <div style={styles.stat}>
                 <Text style={styles.text}>Net</Text>
                 <Text style={styles.heading}>
-                  ${(data?.stats?.totalIncome || 0) - (data?.stats?.totalExpenses || 0)}
+                  ${Number((data?.stats?.totalIncome || 0) - (data?.stats?.totalExpenses || 0)).toFixed(2)}
                 </Text>
               </div>
             </Section>
@@ -88,10 +90,14 @@ export default function EmailTemplate({
                 <Heading style={styles.heading}>Expenses by Category</Heading>
                 {Object.entries(data?.stats.byCategory).map(
                   ([category, amount]) => (
-                    <div key={category} style={styles.row}>
-                      <Text style={styles.text}>{category}</Text>
-                      <Text style={styles.text}>${amount}</Text>
-                    </div>
+                    <Row key={category} style={styles.row}>
+                      <Column>
+                        <Text style={{ ...styles.text, margin: 0 }}>{category}</Text>
+                      </Column>
+                      <Column align="right">
+                        <Text style={{ ...styles.text, margin: 0 }}>${Number(amount).toFixed(2)}</Text>
+                      </Column>
+                    </Row>
                   )
                 )}
               </Section>
