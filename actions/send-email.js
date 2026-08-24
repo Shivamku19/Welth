@@ -5,8 +5,8 @@ export async function sendEmail({ to, subject, react }) {
 
   try {
     const data = await resend.emails.send({
-      from: "Finance App <onboarding@resend.dev>",
-      to: "shivamgzp612005@gmail.com", // Force sending to verified Resend address
+      from: "Finance App <onboarding@resend.dev>", // IMPORTANT: Change this once you add a custom domain!
+      to,
       subject,
       react,
     });
