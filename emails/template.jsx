@@ -9,6 +9,8 @@ import {
   Preview,
   Section,
   Text,
+  Row,
+  Column,
 } from "@react-email/components";
 import * as React from "react";
 
@@ -48,9 +50,29 @@ export default function EmailTemplate({
                 <Text style={statValue}>${data?.income - data?.expenses}</Text>
               </Section>
 
+              {data?.statData && data.statData.length > 0 && (
+                <Section style={statContainer}>
+                  <Heading as="h3" style={sectionHeading}>
+                    Expenses by Category
+                  </Heading>
+                  {data.statData.map((stat, index) => (
+                    <Row key={index} style={rowStyle}>
+                      <Column align="left">
+                        <Text style={nameStyle}>{stat.category}</Text>
+                      </Column>
+                      <Column align="right">
+                        <Text style={moneyStyle}>${stat.amount}</Text>
+                      </Column>
+                    </Row>
+                  ))}
+                </Section>
+              )}
+
               {data?.insights && data.insights.length > 0 && (
                 <Section style={statContainer}>
-                  <Text style={statLabel}>Insights</Text>
+                  <Heading as="h3" style={sectionHeading}>
+                    Welth Insights
+                  </Heading>
                   {data.insights.map((insight, index) => (
                     <Text key={index} style={text}>
                       • {insight}
@@ -218,4 +240,32 @@ const styles = {
   container: container,
   title: headingReport,
   text: text,
+};
+
+const sectionHeading = {
+  fontSize: "18px",
+  fontWeight: "bold",
+  color: "#1e293b",
+  marginBottom: "16px",
+};
+
+const rowStyle = {
+  display: "table",
+  width: "100%",
+  padding: "12px 0",
+  borderBottom: "1px solid #e2e8f0",
+};
+
+const nameStyle = {
+  fontSize: "14px",
+  color: "#6b7280",
+  margin: "0",
+};
+
+const moneyStyle = {
+  fontSize: "14px",
+  fontWeight: "500",
+  color: "#111827",
+  margin: "0",
+  textAlign: "right",
 };
