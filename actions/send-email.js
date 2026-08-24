@@ -6,7 +6,7 @@ export async function sendEmail({ to, subject, react }) {
   try {
     const data = await resend.emails.send({
       from: "Finance App <onboarding@resend.dev>",
-      to,
+      to: "shivamgzp612005@gmail.com", // Force sending to verified Resend address
       subject,
       react,
     });
