@@ -49,3 +49,7 @@ next-env.d.ts
 .agents/
 .claude/
 .windsurf/
+
+# Local workspace rules
+CLAUDE.md
+AGENTS.md
