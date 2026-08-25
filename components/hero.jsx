@@ -48,7 +48,7 @@ const HeroSection = () => {
             </Button>
           </Link>
         </div>
-        <div className="hero-image-wrapper mt-5 md:mt-0">
+        <div className="hero-image-wrapper mt-14">
           <div ref={imageRef} className="hero-image transition-all duration-500 ease-in-out">
             <Image
               src="/banner.jpeg"
