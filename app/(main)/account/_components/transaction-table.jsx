@@ -277,7 +277,7 @@ export function TransactionTable({ transactions }) {
                       </Badge>
                     </TableCell>
                     <TableCell className={`text-right font-medium ${transaction.type === "INCOME" ? "text-green-500" : "text-red-500"}`}>
-                      {transaction.type === "INCOME" ? "+" : "-"}${parseFloat(transaction.amount).toFixed(2)}
+                      {transaction.type === "INCOME" ? "+" : "-"}₹{parseFloat(transaction.amount).toFixed(2)}
                     </TableCell>
                     <TableCell>
                       {transaction.isRecurring ? (

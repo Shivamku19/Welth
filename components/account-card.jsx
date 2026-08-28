@@ -54,7 +54,7 @@ export function AccountCard({ account }) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
-            ${parseFloat(balance).toFixed(2)}
+            ₹{parseFloat(balance).toFixed(2)}
           </div>
           <p className="text-xs text-muted-foreground capitalize mb-4">
             {type.toLowerCase()} Account
@@ -63,11 +63,11 @@ export function AccountCard({ account }) {
         <CardFooter className="flex justify-between text-sm text-muted-foreground pt-4">
           <div className="flex items-center">
             <ArrowUpRight className="mr-1 h-4 w-4 text-emerald-500" />
-            Income: ${parseFloat(account.income || 0).toFixed(2)}
+            Income: ₹{parseFloat(account.income || 0).toFixed(2)}
           </div>
           <div className="flex items-center">
             <ArrowDownRight className="mr-1 h-4 w-4 text-rose-500" />
-            Expense: ${parseFloat(account.expense || 0).toFixed(2)}
+            Expense: ₹{parseFloat(account.expense || 0).toFixed(2)}
           </div>
         </CardFooter>
       </Link>

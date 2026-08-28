@@ -89,10 +89,10 @@ export function AccountChart({ transactions }) {
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(value) => `$${value}`}
+                tickFormatter={(value) => `₹${value}`}
               />
               <Tooltip 
-                formatter={(value) => [`$${value}`]}
+                formatter={(value) => [`₹${value}`]}
                 contentStyle={{ borderRadius: '8px' }}
               />
               <Legend />

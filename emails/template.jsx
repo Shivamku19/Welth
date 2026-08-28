@@ -70,16 +70,16 @@ export default function EmailTemplate({
             <Section style={styles.statsContainer}>
               <div style={styles.stat}>
                 <Text style={styles.text}>Total Income</Text>
-                <Text style={styles.heading}>${Number(data?.stats?.totalIncome || 0).toFixed(2)}</Text>
+                <Text style={styles.heading}>₹{Number(data?.stats?.totalIncome || 0).toFixed(2)}</Text>
               </div>
               <div style={styles.stat}>
                 <Text style={styles.text}>Total Expenses</Text>
-                <Text style={styles.heading}>${Number(data?.stats?.totalExpenses || 0).toFixed(2)}</Text>
+                <Text style={styles.heading}>₹{Number(data?.stats?.totalExpenses || 0).toFixed(2)}</Text>
               </div>
               <div style={styles.stat}>
                 <Text style={styles.text}>Net</Text>
                 <Text style={styles.heading}>
-                  ${Number((data?.stats?.totalIncome || 0) - (data?.stats?.totalExpenses || 0)).toFixed(2)}
+                  ₹{Number((data?.stats?.totalIncome || 0) - (data?.stats?.totalExpenses || 0)).toFixed(2)}
                 </Text>
               </div>
             </Section>
@@ -95,7 +95,7 @@ export default function EmailTemplate({
                         <Text style={{ ...styles.text, margin: 0 }}>{category}</Text>
                       </Column>
                       <Column align="right">
-                        <Text style={{ ...styles.text, margin: 0 }}>${Number(amount).toFixed(2)}</Text>
+                        <Text style={{ ...styles.text, margin: 0 }}>₹{Number(amount).toFixed(2)}</Text>
                       </Column>
                     </Row>
                   )
@@ -141,16 +141,16 @@ export default function EmailTemplate({
             <Section style={styles.statsContainer}>
               <div style={styles.stat}>
                 <Text style={styles.text}>Budget Amount</Text>
-                <Text style={styles.heading}>${data?.budgetAmount}</Text>
+                <Text style={styles.heading}>₹{data?.budgetAmount}</Text>
               </div>
               <div style={styles.stat}>
                 <Text style={styles.text}>Spent So Far</Text>
-                <Text style={styles.heading}>${data?.totalExpenses}</Text>
+                <Text style={styles.heading}>₹{data?.totalExpenses}</Text>
               </div>
               <div style={styles.stat}>
                 <Text style={styles.text}>Remaining</Text>
                 <Text style={styles.heading}>
-                  ${(data?.budgetAmount || 0) - (data?.totalExpenses || 0)}
+                  ₹{(data?.budgetAmount || 0) - (data?.totalExpenses || 0)}
                 </Text>
               </div>
             </Section>

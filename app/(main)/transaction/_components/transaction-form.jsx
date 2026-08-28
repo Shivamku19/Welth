@@ -189,14 +189,14 @@ export function AddTransactionForm({ accounts, categories, editMode = false, ini
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select account">
                 {selectedAccount
-                  ? `${selectedAccount.name} ($${parseFloat(selectedAccount.balance).toFixed(2)})`
+                  ? `${selectedAccount.name} (₹${parseFloat(selectedAccount.balance).toFixed(2)})`
                   : "Select account"}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {accounts.map((account) => (
                 <SelectItem key={account.id} value={account.id}>
-                  {account.name} (${parseFloat(account.balance).toFixed(2)})
+                  {account.name} (₹{parseFloat(account.balance).toFixed(2)})
                 </SelectItem>
               ))}
               <CreateAccountDrawer>
