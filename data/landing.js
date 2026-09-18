@@ -88,24 +88,24 @@ export const howItWorksData = [
 // Testimonials Data
 export const testimonialsData = [
   {
-    name: "Sarah Johnson",
-    role: "Small Business Owner",
-    image: "https://randomuser.me/api/portraits/women/75.jpg",
+    name: "Rahul Verma",
+    role: "Startup Founder",
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
     quote:
-      "Welth has transformed how I manage my business finances. The AI insights have helped me identify cost-saving opportunities I never knew existed.",
+      "Honestly, I used to track my expenses on an Excel sheet and always messed it up at the end of the month. Welth makes it so much easier. The UI is super clean too!",
   },
   {
-    name: "Michael Chen",
-    role: "Freelancer",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Sneha Kapoor",
+    role: "Freelance Designer",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
     quote:
-      "The receipt scanning feature saves me hours each month. Now I can focus on my work instead of manual data entry and expense tracking.",
+      "The AI budgeting thing is genuinely cool. It actually caught a couple of subscriptions I forgot I was even paying for. Saved me like two thousand bucks right there.",
   },
   {
-    name: "Emily Rodriguez",
-    role: "Financial Advisor",
-    image: "https://randomuser.me/api/portraits/women/74.jpg",
+    name: "Amit Desai",
+    role: "IT Professional",
+    image: "https://randomuser.me/api/portraits/men/46.jpg",
     quote:
-      "I recommend Welth to all my clients. The multi-currency support and detailed analytics make it perfect for international investors.",
+      "Been using this for about a month now. Adding transactions is quick and the auto-categorization works surprisingly well. Def recommend it if you're trying to save up.",
   },
 ];
