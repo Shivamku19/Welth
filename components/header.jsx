@@ -43,6 +43,7 @@ const Header = async () => {
                 <span className="hidden md:inline">Add Transaction</span>
               </Button>
             </Link>
+            {/* Phase 2 (AI Chatbot): Add "Chat with Finances" button here */}
           </Show>
 
           <Show when="signed-out">
