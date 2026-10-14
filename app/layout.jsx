@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Welth",
   description: "One stop Finance Platform",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 import { Toaster } from "@/components/ui/sonner";
