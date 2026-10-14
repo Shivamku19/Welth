@@ -6,6 +6,47 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { scanReceipt } from "@/actions/transaction";
 
+function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 1200;
+        const MAX_HEIGHT = 1200;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height = Math.round((height * MAX_WIDTH) / width);
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width = Math.round((width * MAX_HEIGHT) / height);
+            height = MAX_HEIGHT;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
+        const base64String = dataUrl.split(",")[1];
+        resolve({ base64String, mimeType: "image/jpeg" });
+      };
+      img.onerror = () => reject(new Error("Failed to load image for processing"));
+    };
+    reader.onerror = () => reject(new Error("Failed to read image file"));
+  });
+}
+
 export function ReceiptScanner({ onScanComplete }) {
   const fileInputRef = useRef(null);
   const [isScanning, setIsScanning] = useState(false);
@@ -13,39 +54,30 @@ export function ReceiptScanner({ onScanComplete }) {
   const handleReceiptScan = async (file) => {
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("File size should be less than 5MB");
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File size should be less than 10MB");
       return;
     }
 
     setIsScanning(true);
     try {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async () => {
-        const base64String = reader.result.split(",")[1];
-        try {
-          const data = await scanReceipt(base64String, file.type);
-          if (data) {
-            onScanComplete(data);
-            toast.success("Receipt scanned successfully");
-          } else {
-            toast.error("Failed to scan receipt");
-          }
-        } catch (error) {
-          console.error(error);
-          toast.error(error.message || "Failed to scan receipt");
-        } finally {
-          setIsScanning(false);
-          if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-          }
-        }
-      };
+      const { base64String, mimeType } = await compressImage(file);
+      const res = await scanReceipt(base64String, mimeType);
+
+      if (res?.success && res.data) {
+        onScanComplete(res.data);
+        toast.success("Receipt scanned successfully");
+      } else {
+        toast.error(res?.error || "Failed to scan receipt");
+      }
     } catch (error) {
       console.error(error);
       toast.error(error.message || "Failed to scan receipt");
+    } finally {
       setIsScanning(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
 

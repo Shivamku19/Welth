@@ -121,13 +121,22 @@ export async function createTransaction(data) {
 
 export async function scanReceipt(base64String, mimeType) {
   try {
-    if (!base64String) throw new Error("No image provided");
-    
-    const { userId } = await auth();
-    if (!userId) throw new Error("Unauthorized");
-    const model = genAi.getGenerativeModel({ model: "gemini-3.6-flash" });
+    if (!base64String) {
+      return { success: false, error: "No image provided" };
+    }
 
-    // No need to convert arrayBuffer anymore, we already have the base64 string
+    const { userId } = await auth();
+    if (!userId) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    if (!process.env.GEMINI_API_KEY) {
+      return {
+        success: false,
+        error: "GEMINI_API_KEY is not configured in environment variables",
+      };
+    }
+
     const prompt = `
       Analyze this receipt image and extract the following information in JSON format:
       - amount: The total amount (number)
@@ -139,15 +148,41 @@ export async function scanReceipt(base64String, mimeType) {
       Return strictly a JSON object with these fields, without any markdown formatting or additional text.
     `;
 
-    const result = await model.generateContent([
-      {
-        inlineData: {
-          data: base64String,
-          mimeType: mimeType,
-        },
-      },
-      prompt,
-    ]);
+    // Try responsive models with fallback
+    const candidateModels = [
+      "gemini-3.5-flash-lite",
+      "gemini-3.8-flash",
+      "gemini-3.5-flash",
+    ];
+
+    let result = null;
+    let lastError = null;
+
+    for (const modelName of candidateModels) {
+      try {
+        const model = genAi.getGenerativeModel({ model: modelName });
+        result = await model.generateContent([
+          {
+            inlineData: {
+              data: base64String,
+              mimeType: mimeType || "image/jpeg",
+            },
+          },
+          prompt,
+        ]);
+        if (result) break;
+      } catch (err) {
+        lastError = err;
+        console.warn(`Model ${modelName} failed, trying next candidate:`, err.message);
+      }
+    }
+
+    if (!result) {
+      return {
+        success: false,
+        error: lastError?.message || "AI model is currently unavailable. Please try again.",
+      };
+    }
 
     const response = await result.response;
     const text = response.text();
@@ -156,19 +191,22 @@ export async function scanReceipt(base64String, mimeType) {
     try {
       const data = JSON.parse(cleanText);
       return {
-        amount: parseFloat(data.amount),
-        date: new Date(data.date),
-        description: data.description,
-        category: data.category,
-        merchantName: data.merchantName,
+        success: true,
+        data: {
+          amount: parseFloat(data.amount) || 0,
+          date: data.date ? new Date(data.date) : new Date(),
+          description: data.description || "Receipt Expense",
+          category: data.category || "food",
+          merchantName: data.merchantName || "",
+        },
       };
     } catch (parseError) {
-      console.error("Error parsing JSON response:", parseError);
-      throw new Error("Invalid response format from AI");
+      console.error("Error parsing JSON response:", parseError, "Response was:", cleanText);
+      return { success: false, error: "Failed to parse receipt details from AI response" };
     }
   } catch (error) {
     console.error("Error scanning receipt:", error);
-    throw new Error(error.message || "Failed to scan receipt");
+    return { success: false, error: error.message || "Failed to scan receipt" };
   }
 }
 
