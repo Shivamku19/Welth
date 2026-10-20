@@ -127,8 +127,6 @@ export function TransactionTable({ transactions }) {
       toast.success("Transactions deleted successfully");
       setSelectedIds([]);
       router.refresh();
-    } else if (deleteResponse?.error) {
-      toast.error(deleteResponse.error);
     }
   }, [deleteResponse, router]);
 

@@ -12,11 +12,30 @@ const useFetch = (cb) => {
 
     try {
       const response = await cb(...args);
+
+      if (response && response.success === false) {
+        const errorMsg = response.error || "An error occurred";
+        setError(new Error(errorMsg));
+        toast.error(errorMsg);
+        setData(response);
+        return response;
+      }
+
       setData(response);
       setError(null);
+      return response;
     } catch (error) {
-      setError(error);
-      toast.error(error.message);
+      let message = error?.message || "An unexpected error occurred";
+      if (
+        message.includes("Minified React error #441") ||
+        message.includes("react.dev/errors/441") ||
+        message.includes("Server Components render") ||
+        message.includes("digest")
+      ) {
+        message = "Server request failed. Please check rate limits or try again later.";
+      }
+      setError(new Error(message));
+      toast.error(message);
     } finally {
       setLoading(false);
     }

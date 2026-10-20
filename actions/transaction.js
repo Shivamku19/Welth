@@ -62,10 +62,15 @@ export async function createTransaction(data) {
           },
         });
 
-        throw new Error("Too many requests. Please try again later.");
+        const resetMinutes = reset ? Math.ceil(reset / 60) : null;
+        const message = resetMinutes
+          ? `Rate limit exceeded. You can only create 2 transactions per hour. Please try again in ${resetMinutes} minute${resetMinutes > 1 ? "s" : ""}.`
+          : "Too many requests. Rate limit exceeded. Please try again later.";
+
+        return { success: false, error: message };
       }
 
-      throw new Error("Request Blocked");
+      return { success: false, error: "Request blocked by security rules." };
     }
 
     const user = await db.user.findUnique({
@@ -115,7 +120,7 @@ export async function createTransaction(data) {
 
     return { success: true, data: serializeAmount(transaction) };
   } catch (error) {
-    throw new Error(error.message);
+    return { success: false, error: error.message || "Failed to create transaction" };
   }
 }
 
@@ -314,6 +319,6 @@ export async function updateTransaction(id, data) {
 
     return { success: true, data: serializeAmount(transaction) };
   } catch (error) {
-    throw new Error(error.message);
+    return { success: false, error: error.message || "Failed to update transaction" };
   }
 }
