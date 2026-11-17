@@ -60,26 +60,7 @@ export const footerSocialLinks = [
 export const footerLegalLinks = [
   { name: "Privacy Policy", href: "/#features" },
   { name: "Terms of Service", href: "/#features" },
-  { name: "Security & Trust", href: "/#features" },
-  { name: "Cookie Preferences", href: "/#features" },
-  { name: "Compliance Disclosures", href: "/#features" },
+  { name: "Security", href: "/#features" },
+  { name: "Cookie Settings", href: "/#features" },
   { name: "Sitemap", href: "/#features" },
-];
-
-export const trustHighlights = [
-  {
-    title: "SOC-2 Type II Certified",
-    description: "Institutional-grade security protocols",
-    icon: "shield",
-  },
-  {
-    title: "256-Bit SSL/TLS Encryption",
-    description: "End-to-end data encryption at rest and in transit",
-    icon: "lock",
-  },
-  {
-    title: "Regulated Banking Partners",
-    description: "Accounts held with FDIC-insured member institutions",
-    icon: "building",
-  },
 ];

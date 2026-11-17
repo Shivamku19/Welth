@@ -138,7 +138,6 @@ Welth features a modular, big-tech standard footer architecture (`components/foo
 - **Operational Status**: Live status badge with an animated pulse indicator showing 99.99% system uptime.
 - **Brand Column**: Accessible vector social channels (X, GitHub, LinkedIn, Discord, YouTube).
 - **Directory Grid**: Multi-column responsive layout for Product, Solutions, Resources, and Company links with feature pills (`AI`, `OCR`, `We're hiring`).
-- **Security & Compliance**: Verified SOC-2 Type II, 256-Bit SSL/TLS, and FDIC pass-through deposit insurance disclosures.
 - **Sub-Footer**: Dynamic copyright, legal links, region/currency selector, and smooth back-to-top scroll.
 
 ## 👨‍💻 Author

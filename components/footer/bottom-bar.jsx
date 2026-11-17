@@ -16,7 +16,7 @@ export default function BottomBar() {
   };
 
   return (
-    <div className="relative bg-black/40">
+    <div className="relative border-t border-slate-800/80 bg-black/40">
       <div className="container mx-auto px-4 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           {/* Copyright */}

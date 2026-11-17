@@ -2,8 +2,6 @@ import React from "react";
 import NewsletterForm from "./newsletter-form";
 import BrandColumn from "./brand-column";
 import DirectoryNav from "./directory-nav";
-import TrustBadges from "./trust-badges";
-import RegulatoryDisclaimer from "./regulatory-disclaimer";
 import BottomBar from "./bottom-bar";
 
 export default function Footer() {
@@ -29,12 +27,6 @@ export default function Footer() {
           <DirectoryNav />
         </div>
       </div>
-
-      {/* SECURITY & TRUST BADGES */}
-      <TrustBadges />
-
-      {/* REGULATORY DISCLAIMER */}
-      <RegulatoryDisclaimer />
 
       {/* SUB-FOOTER BOTTOM BAR */}
       <BottomBar />
